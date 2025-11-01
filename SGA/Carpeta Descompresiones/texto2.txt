@@ -1,0 +1,2 @@
+La entropía de un sistema cerrado se calcula mediante la fórmula S = k * ln(W), 
+donde S es la entropía, k es la constante de Boltzmann y W es el número de microestados posibles. Este principio es fundamental en la termodinámica estadística.
