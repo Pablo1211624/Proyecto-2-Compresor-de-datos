@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class AA { //Es el que gestiona los archivos y carpetas
@@ -10,6 +11,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
     private ArrayList<File> archivos; //Por si se trata de una carpeta
     private Compresor compresor;
     private boolean esCarpetaSalida; 
+    private Encriptador encriptador;
 
     //Constructor
     public AA(){
@@ -18,6 +20,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
         this.archivos = new ArrayList<>();
         this.compresor = new Compresor();
         this.esCarpetaSalida = false;
+        this.encriptador = new Encriptador();
     }
 
     ///Getters
@@ -130,7 +133,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
         }
     }
 
-    public void comprimir(String entrada, String salida){
+        public void comprimir(String entrada, String salida){
         
         this.esArchivo = false;
         this.esCarpeta = false;
@@ -195,7 +198,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
         if(esArchivo){
 
             String nombreArchivo = nombreArchivo(entrada, ".txt");
-            String nombreArchivoBusqueda = nombreArchivo(entrada, ".cmp");
+            String nombreArchivoBusqueda = Paths.get(entrada).getFileName().toString();
             String destino = cambiarSalida(salida, nombreArchivo);
             ///String destino = cambiarExtension(ruta, ".txt");
 
@@ -212,8 +215,9 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
             for(File archivoRecorrido : this.archivos){
 
+                if (!archivoRecorrido.getName().toLowerCase().endsWith(".cmp")) continue;
                 String nombreArchivo = nombreArchivo(archivoRecorrido.getAbsolutePath(), ".txt");
-                String nombreArchivoBusqueda = nombreArchivo(archivoRecorrido.getAbsolutePath(), ".cmp");
+                String nombreArchivoBusqueda = archivoRecorrido.getName();
                 String destino = cambiarSalida(salida, nombreArchivo);
                 String rutaOriginal = archivoRecorrido.getAbsolutePath();
 
@@ -227,6 +231,214 @@ public class AA { //Es el que gestiona los archivos y carpetas
             System.out.println("\n--------------------\n");
         } else {
             System.err.println("Verificar algun error en la descompresion de la ruta...\n");
+        }
+    }
+
+
+    private String baseName(File f) {
+        String name = f.getName();
+        int dot = name.lastIndexOf('.');
+        return (dot >= 0) ? name.substring(0, dot) : name;
+    }
+
+    public void Encriptar(String entrada, String salida,String contraseña)
+    {
+        //reseteamos los valores
+        this.esArchivo = false;
+        this.esCarpeta = false;
+        verificarRuta(entrada);
+
+        if (esArchivo)
+        {
+            try
+            {
+                File entradaA = new File((entrada));
+                String nombre = baseName(entradaA) + ".enc";
+                this.encriptador.Encriptar(entrada, salida, contraseña, nombre);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+                System.out.println("Error al encriptar el archivo..\n");
+            }
+        }
+        else if (esCarpeta)
+        {
+            for(File f : this.archivos)
+            {
+                try
+                {
+                    String nombre = baseName(f) + ".enc";
+                    this.encriptador.Encriptar(f.getAbsolutePath(), salida, contraseña, nombre);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.out.println("Error en la ecriptacion de: " + f.getAbsolutePath() +"\n");
+                }
+            }
+        }
+        else
+        {
+            System.out.println("Verifica que la ruta sea correcta.\n");
+        }
+    }
+
+    public void Desencriptar(String entrada, String salida, String contraseña)
+    {
+        this.esArchivo = false;
+        this.esCarpeta = false;
+        verificarRuta(entrada);
+
+        if(esArchivo)
+        {
+            try
+            {
+                this.encriptador.Desencriotacion(entrada, salida, contraseña, ".txt");
+            }catch(IOException e)
+            {
+                e.printStackTrace();
+                System.out.println("Error al desencriptar.\n");
+            }
+        }
+        else if (esCarpeta)
+        {
+            for(File f : this.archivos)
+            {
+                try
+                {
+                    this.encriptador.Desencriotacion(f.getAbsolutePath(), salida, contraseña, ".txt");
+                }catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.out.println("Error al desencriptar: " + f.getAbsolutePath() + "\n");
+                }
+            }
+        }
+    }
+
+    public void ComrpimiryEncriptar(String entrada, String salida, String password)
+    {
+        this.esArchivo = false;
+        this.esCarpeta = false;
+        this.esCarpetaSalida = false;
+        verificarRuta(entrada);
+        boolean Salidaok1 = verificarRutaSalida(salida);
+
+        if(!Salidaok1)
+        {
+            System.err.println("La carpeta de salida no es válida.\n");
+            return;
+        }
+
+        if(esArchivo)
+        {
+            try{
+            String Nombrecmp = nombreArchivo(entrada, ".cmp");
+            String rutaCmp = cambiarSalida(salida, Nombrecmp);
+
+            this.compresor.compresionArchivo(entrada, rutaCmp, Nombrecmp);
+
+            String nombreEc = nombreArchivo(entrada, ".ec");
+            this.encriptador.Encriptar(rutaCmp, salida, password, nombreEc);
+            }catch(IOException e)
+            {
+                e.printStackTrace();
+                System.err.println("Error en comprimir+encriptar (archivo).\n");
+            }
+        }
+        else if (esCarpeta)
+        {
+            for (File f : this.archivos)
+            {
+                try
+                {
+                    String rutaOriginal = f.getAbsolutePath();
+                    String nombreCmp = nombreArchivo(rutaOriginal, ".cmp");
+                    String rutaCmp   = cambiarSalida(salida, nombreCmp);
+
+                    this.compresor.compresionArchivo(rutaOriginal, rutaCmp, nombreCmp);
+
+                    String nombreEc = nombreArchivo(rutaOriginal, ".ec");
+                    this.encriptador.Encriptar(rutaCmp, salida, password, nombreEc);
+                    System.out.println("Archivo final .ec en: " + cambiarSalida(salida, nombreEc));
+                }catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.err.println("Error en desencriptar+descomprimir: " + f.getAbsolutePath() + "\n");
+                }
+            }
+        }
+        else
+        {
+            System.err.println("Ruta de entrada inválida.\n");
+        }
+    }
+
+    public void DesencriptaryDescromprimir(String entrada, String salida, String password)
+    {
+        this.esArchivo = false;
+        this.esCarpeta = false;
+        this.esCarpetaSalida = false;
+        verificarRuta(entrada);
+        boolean Salidaok1 = verificarRutaSalida(salida);
+
+        if(!Salidaok1)
+        {
+            System.err.println("La carpeta de salida no es válida.\n");
+            return;
+        }
+
+        if(esArchivo)
+        {
+            try{
+                File archivoEc = new File(entrada);
+                String nombreBase = baseName(archivoEc);
+                
+                String nombreCmpExacto = nombreBase + ".cmp";
+                String rutaCmpTemporal = cambiarSalida(salida, nombreCmpExacto);
+
+                this.encriptador.Desencriotacion(entrada, salida, password, nombreCmpExacto);
+
+                String nombreFinal = nombreBase + ".txt";
+                String rutaFinal = cambiarSalida(salida, nombreFinal);
+
+                this.compresor.descompresionArchivo(rutaCmpTemporal, rutaFinal, nombreCmpExacto);
+                System.out.println("Archivo descomprimido en: " + rutaFinal);
+                }catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.err.println("Error en desencriptar+descomprimir (archivo).\n");
+                }
+        }
+        else if (esCarpeta)
+        {
+            for (File f : this.archivos)
+            {
+                try
+                {
+                    String rutaArchivoEc = f.getAbsolutePath();
+                    String nombreBase = baseName(f);
+                
+                    String nombreCmpExacto = nombreBase + ".cmp";
+                    String rutaCmpTemporal = cambiarSalida(salida, nombreCmpExacto);
+
+                    this.encriptador.Desencriotacion(rutaArchivoEc, salida, password, nombreCmpExacto);
+
+                    String nombreFinal = nombreBase + ".txt";
+                    String rutaFinal = cambiarSalida(salida, nombreFinal);
+
+                    this.compresor.descompresionArchivo(rutaCmpTemporal, rutaFinal, nombreCmpExacto);
+                    System.out.println("Archivo descomprimido en: " + rutaFinal);
+                }catch(IOException e)
+                {
+                    e.printStackTrace();
+                    System.err.println("Error en desencriptar+descomprimir: " + f.getAbsolutePath() + "\n");
+                }
+            }
+        }
+        else
+        {
+            System.err.println("Ruta de entrada inválida.\n");
         }
     }
 
