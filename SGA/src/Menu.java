@@ -8,59 +8,45 @@ public class Menu {
         this.accion=new AA();
     }
 
+        String entrada = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Archivos";
+        String salida1 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Compresiones";
+        String salida5 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Descompresiones";
+        String salida = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Encriptados";
+        String salida2 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Desencriptados";
+        String salida3 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Compreso y Encriptado";
+        String salida4 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Desencriptado y descomprimido";
+        String password="1234";
+
+
     private void comprimirArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por comprimir (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        accion.comprimir(entrada, salida);
+        System.out.println("Comprimiendo: " + entrada + " a " + salida1);
+        accion.comprimir(entrada, salida1);
     }
 
-        private void descomprimirArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por descomprimir (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        accion.descomprimir(entrada, salida);
+    private void descomprimirArchivos(){
+        System.out.println("Descomprimiendo: " + salida1 + " a " + salida5);
+        accion.descomprimir(salida1, salida5);
     }
 
-        private void encriptarArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por encriptar (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        System.out.println("Ingrese la clave para poder encriptar");
-        String clave = scanner.nextLine();
-        accion.Encriptar(entrada, salida, clave);
-    }
-       private void desencriptarArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por desencriptar (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        System.out.println("Ingrese la clave para poder desencriptar");
-        String clave = scanner.nextLine();
-        accion.Desencriptar(entrada, salida, clave);
-    }
-        private void comprimirEncriptarArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por comprimir y encriptar (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        System.out.println("Ingrese la clave para poder comprimir y encriptar");
-        String clave = scanner.nextLine();
-        accion.ComrpimiryEncriptar(entrada, salida, clave);
-    }
-        private void descomprimirDesencriptarArchivos(){
-        System.out.println("Ingrese la ruta actual del archivo por descomprimir y desencriptar (que este dentro de la carpeta del proyecto): ");
-        String entrada = scanner.nextLine();
-        System.out.println("Ingrese el nombre/ruta de salida del archivo");
-        String salida = scanner.nextLine();
-        System.out.println("Ingrese la clave para poder descomprimir y desencriptar");
-        String clave = scanner.nextLine();
-        accion.DesencriptaryDescromprimir(entrada, salida, clave);
+    private void encriptarArchivos(){
+        System.out.println("Encriptando: " + entrada + " a " + salida);
+        accion.Encriptar(entrada, salida, password);
     }
 
+    private void desencriptarArchivos(){
+        System.out.println("Desencriptando: " + salida + " a " + salida2);
+        accion.Desencriptar(salida, salida2, password);
+    }
+
+    private void comprimirEncriptarArchivos(){
+        System.out.println("Comprimiendo y encriptando: " + entrada + " a " + salida3);
+        accion.ComrpimiryEncriptar(entrada, salida3, password);
+    }
+
+    private void descomprimirDesencriptarArchivos(){
+        System.out.println("Descomprimiendo y desencriptando: " + salida3 + " a " + salida4);
+        accion.DesencriptaryDescromprimir(salida3, salida4, password);
+    }
     public void menuP(){
         int opcion=0;
 
