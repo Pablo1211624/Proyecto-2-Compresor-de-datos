@@ -3,6 +3,8 @@ public class App {
         Menu menu = new Menu();
         menu.menuP();
 
+        /*Las rutas se modifican en el menu.
+        
         AA admin = new AA();
         String entrada = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Archivos";
         String salida1 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Compresiones";
@@ -11,6 +13,7 @@ public class App {
         String salida2 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Desencriptados";
         String salida3 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Compreso y Encriptado";
         String salida4 = "C:\\Users\\bronc\\OneDrive - Universidad Rafael Landivar\\Documentos\\Landivar\\Tareas 2025\\4to semetre 2025\\Estructura de datos II\\Proyecto2\\Proyecto-2-Compresor-de-datos\\SGA\\Carpeta Desencriptado y descomprimido";
+        String password="1234";
 
         //admin.comprimir(entrada, salida1);
 
@@ -24,7 +27,7 @@ public class App {
         //admin.comprimir(entrada, salida1);
         //admin.descomprimir(salida1, salida5);
         admin.ComrpimiryEncriptar(entrada, salida3, "1234");
-        admin.DesencriptaryDescromprimir(salida3, salida4, "1234");
+        admin.DesencriptaryDescromprimir(salida3, salida4, "1234");*/
         
 
     }
