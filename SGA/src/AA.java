@@ -318,6 +318,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
     public void ComrpimiryEncriptar(String entrada, String salida, String password)
     {
+        long inicioTiempo = System.currentTimeMillis();
         this.esArchivo = false;
         this.esCarpeta = false;
         this.esCarpetaSalida = false;
@@ -332,6 +333,8 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
         if(esArchivo)
         {
+            File archivoOrig = new File(entrada);
+            long tamanoOriginal = archivoOrig.length();
             try{
             String Nombrecmp = nombreArchivo(entrada, ".cmp");
             String rutaCmp = cambiarSalida(salida, Nombrecmp);
@@ -340,6 +343,12 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
             String nombreEc = nombreArchivo(entrada, ".ec");
             this.encriptador.Encriptar(rutaCmp, salida, password, nombreEc);
+            File archivoFinal = new File(salida, nombreEc);
+            long tamanoFinal = archivoFinal.length(); 
+            long finTiempo = System.currentTimeMillis();
+            long tiempoTotal = finTiempo - inicioTiempo;
+            Logger.guardarOperacion("Comprimir+Encriptar", entrada, tiempoTotal, archivoFinal.getAbsolutePath(), tamanoOriginal, tamanoFinal);
+
             }catch(IOException e)
             {
                 e.printStackTrace();
@@ -376,6 +385,7 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
     public void DesencriptaryDescromprimir(String entrada, String salida, String password)
     {
+        long inicioTiempo = System.currentTimeMillis();
         this.esArchivo = false;
         this.esCarpeta = false;
         this.esCarpetaSalida = false;
@@ -391,6 +401,8 @@ public class AA { //Es el que gestiona los archivos y carpetas
         if(esArchivo)
         {
             try{
+                File archivoOrig = new File(entrada);
+                long tamanoOriginal = archivoOrig.length();
                 File archivoEc = new File(entrada);
                 String nombreBase = baseName(archivoEc);
                 
@@ -404,6 +416,12 @@ public class AA { //Es el que gestiona los archivos y carpetas
 
                 this.compresor.descompresionArchivo(rutaCmpTemporal, rutaFinal, nombreCmpExacto);
                 System.out.println("Archivo descomprimido en: " + rutaFinal);
+                long finTiempo = System.currentTimeMillis(); 
+                long tiempoTotal = finTiempo - inicioTiempo;
+                File archivoFinal = new File(rutaFinal);
+                long tamanoFinal = archivoFinal.length();
+                Logger.guardarOperacion("Desencriptar+Descomprimir", entrada, tiempoTotal, archivoFinal.getAbsolutePath(), tamanoOriginal, tamanoFinal);
+           
                 }catch(IOException e)
                 {
                     e.printStackTrace();
