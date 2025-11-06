@@ -1,4 +1,6 @@
-public class NodoHuffman implements Comparable<NodoHuffman> {
+import java.io.Serializable;
+
+public class NodoHuffman implements Comparable<NodoHuffman>, Serializable{
     
     //Atributos
     String tokens; 
@@ -25,3 +27,4 @@ public class NodoHuffman implements Comparable<NodoHuffman> {
             return Integer.compare(this.frecuencia, o.frecuencia); 
         }
 }
+
