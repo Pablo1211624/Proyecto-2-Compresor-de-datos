@@ -1,4 +1,5 @@
-public class AD { //Clase auxiliar para guardar Huffman y realiza la decodificación
+import java.io.Serializable;
+public class AD implements Serializable { //Clase auxiliar para guardar Huffman y realiza la decodificación
     
     //Atributos
     NodoHuffman raiz;
@@ -27,3 +28,4 @@ public class AD { //Clase auxiliar para guardar Huffman y realiza la decodificac
         return false;
     }
 }
+
