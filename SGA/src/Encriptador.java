@@ -18,7 +18,9 @@ public class Encriptador {
 
     public void Encriptar(String entrada, String salida, String password, String NombreSalida) throws IOException
     {
+        long inicioTiempo = System.currentTimeMillis();
         File origen = new File(entrada);
+        long tamanoOriginall = origen.length();
         File carpeta = new File(salida);
         if(!carpeta.exists()&&!carpeta.mkdirs())
         {
@@ -42,13 +44,19 @@ public class Encriptador {
             }
         sc.close();
         pw.close();
-
+        long finTiempo = System.currentTimeMillis();
+        long tiempoTotal = finTiempo - inicioTiempo;
+        File archivoFinal = new File(carpeta, NombreSalida);
+        long tamanoNuevoo = archivoFinal.length();
+        Logger.guardarOperacion("Encriptacion", entrada, tiempoTotal, archivoFinal.getAbsolutePath(), tamanoOriginall, tamanoNuevoo);
         System.out.println("Archivo encriptado creado: " + SalidaCarpeta.getAbsolutePath());
     }
 
     public void Desencriotacion(String entrada, String salida, String password, String extension) throws IOException
     {
+        long inicioTiempo = System.currentTimeMillis();
         File ArchivoEncriptado = new File(entrada);
+        long tamanoOriginall = ArchivoEncriptado.length();
         File carpeta = new File(salida);
         if(!carpeta.exists()&&!carpeta.mkdirs())
         {
@@ -71,6 +79,11 @@ public class Encriptador {
             }
         sc.close();
         pw.close();
+        long finTiempo = System.currentTimeMillis();
+        long tiempoTotal = finTiempo - inicioTiempo;
+        File archivoFinal = new File(carpeta, extension);
+        long tamanoNuevoo = archivoFinal.length();
+        Logger.guardarOperacion("Desencriptacion", entrada, tiempoTotal, archivoFinal.getAbsolutePath(), tamanoOriginall, tamanoNuevoo);
         System.out.println("Archivo desencriptado creado: " + SalidaCarpeta.getAbsolutePath());
     }
 }
